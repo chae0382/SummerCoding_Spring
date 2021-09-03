@@ -1,27 +1,23 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<head th:replace="fragments :: head"></head>
 <body>
-게시글 생성
+<div th:replace="fragments :: main-nav"></div>
 
-<form method="post" th:action="@{/new-post}" th:object="${postForm}">
-    <label for="id">ID : </label>
-    <input type="text" name="id" id="id" th:field="*{id}">
-    <small th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></small>
+<div class="container">
+    Post 생성
 
-    <label for="title">TITLE : </label>
-    <input type="text" name="title" id="title" th:field="*{title}">
-    <small th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></small>
+    <form method="post" th:action="@{/new-post}" th:object="${postForm}">
+        <label for="title">제목 : </label>
+        <input type="text" name="title" id="title" th:field="*{title}">
+        <small th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></small>
 
-    <label for="description">DESCRIPTION : </label>
-    <input type="text" name="description" id="description" th:field="*{description}">
-    <small th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></small>
+        <label for="description">상세 내용 : </label>
+        <input type="text" name="description" id="description" th:field="*{description}">
+        <small th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></small>
 
-    <button type="submit" name="submit" value="value">생성하기</button>
-</form>
-
+        <button type="submit" name="submit" value="value">생성하기</button>
+    </form>
+</div>
 </body>
 </html>

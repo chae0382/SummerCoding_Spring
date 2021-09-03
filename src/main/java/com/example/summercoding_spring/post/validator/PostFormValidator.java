@@ -22,9 +22,6 @@ public class PostFormValidator implements Validator {
     public void validate(Object target, Errors errors) {
         PostForm postForm = (PostForm)target;
 
-        if(postRepository.existsById(postForm.getId())){
-            errors.rejectValue("id", "exists-value", "이미 존재하는 ID 입니다.");
-        }
         if(postRepository.existsByTitle(postForm.getTitle())){
             errors.rejectValue("title", "exists-value", "이미 존재하는 Title 입니다.");
         }

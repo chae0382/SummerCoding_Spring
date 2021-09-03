@@ -1,8 +1,15 @@
 package com.example.summercoding_spring.user;
 
+import com.example.summercoding_spring.post.Post;
+import com.example.summercoding_spring.post.PostRepository;
+import com.example.summercoding_spring.post.PostRepository;
+import com.example.summercoding_spring.user.form.LoginForm;
+import com.example.summercoding_spring.user.form.SignUpForm;
 import com.example.summercoding_spring.user.form.UserForm;
+import com.example.summercoding_spring.user.validator.SignUpFormValidator;
 import com.example.summercoding_spring.user.validator.UserFormValidator;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.usertype.UserType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -22,6 +29,8 @@ public class UserController {
 
     private final UserService userService;
     private final UserFormValidator userFormValidator;
+    private final SignUpFormValidator signUpFormValidator;
+    private final PostRepository postRepository;
 
     @InitBinder("userForm")
     public void initBindUserForm(WebDataBinder webDataBinder){
@@ -29,13 +38,40 @@ public class UserController {
 
     }
 
+    @InitBinder("signUpForm")
+    public void initBinderSignUpForm(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(signUpFormValidator);
+    }
+
+    @GetMapping("/login")
+    public String login(Model model){
+        model.addAttribute("loginForm", new LoginForm());
+        return "users/login";
+    }
+
+    @GetMapping("/sign-up")
+    public String signUp(Model model){
+        model.addAttribute("signUpForm", new SignUpForm());
+        return "users/sign-up";
+    }
+
+    @PostMapping("/sign-up")
+    public String signUp(@Valid SignUpForm signUpForm, Errors errors) {
+        if (errors.hasErrors()) {
+            return "users/sign-up";
+        }
+
+        User user = userService.createUser(signUpForm);
+        userService.login(user, signUpForm.getPassword());
+
+        return "redirect:/";
+    }
+
     // 유저 목록 조회
     // GET /users
     @GetMapping("/users")
     public String index(Model model) {
-        userService.save(new User(1L, "하이", "하이"));
-        userService.save(new User(2L, "하이1", "하이1"));
-
+//
         List<User> users = userService.findAll();
         model.addAttribute("users", users);
 
@@ -48,7 +84,7 @@ public class UserController {
     public String show(@PathVariable Long userId, Model model) {
         User user = userService.findById(userId);
         model.addAttribute("user", user);
-
+        //user.getPosts();
         return "users/show";
     }
 
@@ -66,11 +102,12 @@ public class UserController {
         if (errors.hasErrors()){
             return "users/new-user";
         }
-        User user = new User(
-                userForm.getId(),
-                userForm.getName(),
-                userForm.getType()
-        );
+        User user = User.builder()
+                .name(userForm.getName())
+                .username(userForm.getName())
+                .type("ROLE_USER")
+                .password("root")
+                .build();
         userService.save(user);
 
         return "redirect:/users";
@@ -92,10 +129,7 @@ public class UserController {
 
     @PostMapping("/users/edit-user/{userId}")
     public String editUser(@PathVariable Long userId, UserForm userForm) {
-        User user = userService.findById(userId);
-        user.setId(userForm.getId());
-        user.setName(userForm.getName());
-        user.setType(userForm.getType());
+        userService.update(userId,userForm);
 
         return "redirect:/users";
     }

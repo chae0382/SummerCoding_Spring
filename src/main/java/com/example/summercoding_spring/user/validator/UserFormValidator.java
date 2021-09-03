@@ -22,9 +22,6 @@ public class UserFormValidator implements Validator {
     public void validate(Object target, Errors errors) {
         UserForm userForm = (UserForm)target;
 
-        if(userRepository.existsById(userForm.getId())){
-            errors.rejectValue("id", "exists-value", "이미 존재하는 ID 입니다.");
-        }
         if(userRepository.existsByName(userForm.getName())){
             errors.rejectValue("name", "exists-value", "이미 존재하는 이름 입니다.");
         }

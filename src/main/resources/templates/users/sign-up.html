@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments :: head"></head>
+<body>
+<div th:replace="fragments :: main-nav"></div>
+
+<div class="container mt-5">
+    <div class="text-center">
+        <h2>회원가입</h2>
+    </div>
+
+    <div class="row justify-content-center">
+        <form class="row col-sm-6" th:action="@{/sign-up}" th:object="${signUpForm}" method="post">
+            <div class="col-12 mb-3">
+                <label for="username" class="form-label">Username </label>
+                <input class="form-control" type="text" name="username" id="username" th:field="*{username}">
+                <small class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></small>
+            </div>
+            <div class="col-sm-6 mb-3">
+                <label for="password" class="form-label">Password </label>
+                <input class="form-control" type="password" name="password" id="password" th:field="*{password}">
+                <small class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
+            </div>
+            <div class="col-sm-6 mb-3">
+                <label for="password-confirmation" class="form-label">Password Confirmation</label>
+                <input class="form-control" type="password" name="password-confirmation" id="password-confirmation" th:field="*{passwordConfirmation}">
+                <small class="text-danger" th:if="${#fields.hasErrors('passwordConfirmation')}" th:errors="*{passwordConfirmation}"></small>
+            </div>
+            <div class="col-12 mb-3">
+                <label for="name" class="form-label">Name </label>
+                <input class="form-control" type="text" name="name" id="name" th:field="*{name}">
+                <small class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></small>
+            </div>
+
+            <button type="submit" name="submit" class="btn btn-primary col-12">Submit</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

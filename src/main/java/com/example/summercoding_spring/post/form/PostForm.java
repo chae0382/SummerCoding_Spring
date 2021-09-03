@@ -13,7 +13,6 @@ import javax.validation.constraints.NotNull;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class PostForm {
     @NotNull
     private Long id;

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments :: head"></head>
+<body>
+<div th:replace="fragments :: main-nav"></div>
+
+<div class="container mt-5">
+    <div class="text-center">
+        <h2>로그인</h2>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-sm-6">
+            <div th:if="${param.error}" class="alert alert-danger" role="alert">
+                <span>계정과 패스워드가 정확하지 않습니다.</span><br>
+                <span>또는 확인되지 않은 계정을 사용했습니다. 계정을 확인해 주세요.</span>
+            </div>
+
+            <form method="post" th:action="@{/login}">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Email address</label>
+                    <input type="text" class="form-control" id="username" name="username">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password">
+                </div>
+
+                <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -8,8 +8,6 @@
 유저 수정
 
 <form method="post" th:action="@{/users/edit-user/{id}(id=${userForm.id})}" th:object="${userForm}">
-    <label for="id">ID : </label>
-    <input type="text" name="id" id="id" th:field="*{id}">
 
     <label for="name">이름 : </label>
     <input type="text" name="name" id="name" th:field="*{name}">

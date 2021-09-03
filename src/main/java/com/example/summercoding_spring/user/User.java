@@ -1,16 +1,27 @@
 package com.example.summercoding_spring.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.example.summercoding_spring.post.Post;
+import lombok.*;
+import org.hibernate.usertype.UserType;
 
-@Getter
-@Setter
-@AllArgsConstructor
+import javax.persistence.*;
+import java.util.List;
 
+
+@Getter @Setter
+@Builder @AllArgsConstructor @NoArgsConstructor
+@Entity
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private String username;
+    private String password;
+
     private String name;
+
     private String type;
+
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts;
 }

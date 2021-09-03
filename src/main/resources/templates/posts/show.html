@@ -1,14 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments :: head"></head>
 <body>
-게시글 상세 조회
+<div th:replace="fragments :: main-nav"></div>
 
-ID : <p th:text="${post.id}"></p>
-TITLE : <p th:text="${post.title}"></p>
-TYPE : <p th:text="${post.description}"></p>
+<div class="container">
+  Post 상세 조회
+
+  ID : <p th:text="${post.id}"></p>
+  제목 : <p th:text="${post.title}"></p>
+  상세 내용 : <p th:text="${post.description}"></p>
+  작성자 : <p th:text="${post.getUser()?.getName()}"></p>
+
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">내용</th>
+      <th scope="col">작성자</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="comment : ${post.getComments()}">
+      <td><span th:text="${comment.id}"></span></td>
+      <td><span th:text="${comment.content}"></span></td>
+      <td><span th:text="${comment.getUser()?.getName()}"></span></td>
+    </tr>
+    </tbody>
+  </table>
+  <form method="post" th:action="@{/posts/{id}/new-comment(id = ${post.getId()})}" th:object="${commentForm}">
+    <label for="content">내용 : </label>
+    <input type="text" name="content" id="content" th:field="*{content}">
+    <small th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></small>
+
+    <button type="submit" name="submit" value="value">작성하기</button>
+  </form>
+</div>
 </body>
 </html>

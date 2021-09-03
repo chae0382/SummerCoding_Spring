@@ -1,14 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head th:replace="fragments :: head"></head>
 <body>
+<div th:replace="fragments :: main-nav"></div>
+<div class="container">
     유저 상세 조회
 
     ID : <p th:text="${user.id}"></p>
     이름 : <p th:text="${user.name}"></p>
     타입 : <p th:text="${user.type}"></p>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">TITLE</th>
+            <th scope="col">DESCRIPTION</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="post : ${user.getPosts()}">
+            <td><span th:text="${post.title}"></span></td>
+            <td><span th:text="${post.description}"></span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>
